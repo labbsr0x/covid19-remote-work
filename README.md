@@ -1,11 +1,24 @@
 # COVID-19 Remote Work Plan
 
+## Objectives and Key Results
+
+- **Objetivo estratégico**: "Reduce the mortality of elderly people due to the COVID-19 epidemic in Brazil"
+  - **Objetivo tático**: "Reduce crowds in cities"
+    - **Objetivo operacional**: "Make remote work happen for 80% of the people who work in BB internal offices by 03/28”
+      - **KR**: Reach 60K simultaneous VPNs sessions
+      - **KR**: Reach 60K employees with Firefox + VPN + tn3270 on their personal computer connected by VPN to the BB environment
+      - **KR**: Reach 30K employees ables to use Office365 on their personal computers, from home
+
+## Job to be done
+
 - **OpenVPN Server** running in Docker containers (https://github.com/kylemanna/docker-openvpn)
 - **Virtual Box Virtual Machine creator** created on demand for each Employee composed by: t3270, Firefox, OpenVPN client
 - **Website** a landing page that explains the step by step of how to download and Install this VPN solution to the employees computers as well as makes available to the users the form to fill out their info to request their machine.
 - **Backend** Receives credentials and validates it on the corporate bases. Starts a **Conductor** service for each new user to build a specific Virtual Machine Imagem for him/her. This image comes with: t3270, Firefox and OpenVPN client, etc.....
-- **Conductor**: API de build de imagem, API de controle de emissão de certificados com a URL da imagem - envio da URL pro e-mail do cara.
-- **Object Storage**: store the generated Installer so the user can download anytime. Currenly, we are usning Azure Blobs.
-- **API de build de imagem de VM**: API que invoca os scripts que montam uma VM em VirtualBox
-- **API de controle de emissão de certificados com a URL da imagem - envio da URL pro e-mail do cara.**: API que gera os certificados pra cada usuário para serem usados para autenticar na VPN.
-- **Web server com print da Plataforma BB**: servidor WEB que recebe na porta 80 mas que só é acesível via VPN.
+- **Conductor**: The workers will need the following APIs:
+  - API to issue the personal certificate
+  - API to distribute the certificate among the OpenVPN servers
+  - API to store the Virtual Machine image in Blob
+- **Object Storage**: store the generated Virtual Machine so the user can download anytime by knowing this unique URL. Currently, we are usning Azure Blobs.
+- **Web server com print da Plataforma BB**: Web server that listens for GET request on port 80 and returns a PlataformaBB PNG print, but is only accessible via VPN.
+- **Central de suporte**: Organize FAQ, KB, Chat and phone to assist the staff who are having difficulty performing the steps
