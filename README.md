@@ -9,7 +9,15 @@
       - **KR**: Reach 60K employees with Firefox + VPN + tn3270 on their personal computer connected by VPN to the BB environment
       - **KR**: Reach 30K employees ables to use Office365 on their personal computers, from home
 
+### Why stop the virus spread now?
+
+If we delay the virus spread, the health system could handle it, otherwise the system can collapse and people is going to die rapdly and not only because of COVID-19
+
+![Immediate Spread x Delayed Spread](https://res.cloudinary.com/lexana/image/upload/v1584360379/covid-danger.jpg)
+
 ## Job to be done
+
+![Macro components of the solution](https://res.cloudinary.com/lexana/image/upload/v1584360379/components-black-box.jpg)
 
 - **OpenVPN Server** running in Docker containers (https://github.com/kylemanna/docker-openvpn)
 - **Virtual Box Virtual Machine creator** created on demand for each Employee composed by: t3270, Firefox, OpenVPN client
@@ -22,3 +30,5 @@
 - **Object Storage**: store the generated Virtual Machine so the user can download anytime by knowing this unique URL. Currently, we are usning Azure Blobs.
 - **Web server com print da Plataforma BB**: Web server that listens for GET request on port 80 and returns a PlataformaBB PNG print, but is only accessible via VPN.
 - **Central de suporte**: Organize FAQ, KB, Chat and phone to assist the staff who are having difficulty performing the steps
+
+![Detailed components](https://res.cloudinary.com/lexana/image/upload/v1584360379/components-gray-box.jpg)
