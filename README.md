@@ -26,7 +26,7 @@ We need a highly scalable VPN infraestructure
 - **OpenVPN Server**: running in Docker containers (https://github.com/flaviostutz/openvpn-server)
 - **Virtual Box Virtual Machine creator**: created on demand for each Employee composed by: t3270, Firefox, OpenVPN client
 - **Website**: a landing page that explains the step by step of how to download and Install this VPN solution to the employees computers as well as makes available to the users the form to fill out their info to request their machine.
-- **Backend**: Receives credentials, validates it on the corporate bases and issue the user certificates for the VPN provisioning. Starts a **Conductor** service for each new user to build a specific Virtual Machine Imagem for him/her. This image comes with: t3270, Firefox and OpenVPN client, etc.....
+- **Backend**: Receives credentials, validates it on the corporate bases and issue the user certificates for the VPN provisioning. Starts a **Conductor** workflow for each new user to build a specific Virtual Machine Imagem for him/her. This image comes with: t3270, Firefox and OpenVPN client, etc.....
 - **Conductor**: The workers will need the following APIs:
   - API to build the user custom made Virtual Machine
   - API to distribute the certificate among the OpenVPN servers
@@ -42,20 +42,14 @@ We need a highly scalable VPN infraestructure
 
 We need a ready-to-go easy-to-use Remote Desktop solution
 
-- **Website** a landing page where the user will inform his/her e-mail and click "Request remote work kit".
-- **Conductor**: Triggered when the remote kit is requested. The workers will need the following APIs:
-  - API to build the user custom made Virtual Machine
-  - API to distribute the certificate among the OpenVPN servers
-  - API to store the Virtual Machine image in Blob
+- **Website**: will have a landing page where the user will inform his/her e-mail and click "Request remote work kit" and a page with the users RDP shortcuts. The URL of this RDP list will have the following pattern: /user_@_email
+- **Backend** Receives the form request of the landing page with the user e-mail. It issues a certificate for that request and starts a **Conductor** workflow to build the custom made infraestructure for that user (small business) passing those certificates along.
+- **Conductor**: Will bring up the OpenVPN server for the user with the respective certificate provisioned and will build and store a Virtual Machine (Router) with OpenVPN client with respective certificate configured. So, the workers will need the following APIs:
+  - API to bring up (docker up) a OpenVPN Server for the requesting user with a label indicating who is the user of this instance
+  - API to build the a custom made Virtual Machine that will act as a "virtual router" and must be installed in at least one of the office internal network machines. This will inspect the OpenVPN server labeled with the user e-mail to check what is its published port to configure OpenVPN client present in the machine
+  - API to store the Virtual Machine image in Object Storage
 - **OpenVPN Server**: One isolated instance for each client, running in Docker containers https://github.com/flaviostutz/openvpn-server)
-- **Virtual Box Virtual Machine creator**: a service that builds one VirtualBox image per client tied (certificate) to the respective OpenVPNServer
-- **Virtual Box Virtual Machine creator** created on demand for each Employee composed by: t3270, Firefox, OpenVPN client
-- **Backend** Receives credentials and validates it on the corporate bases. Starts a **Conductor** service for each new user to build a specific Virtual Machine Imagem for him/her. This image comes with: t3270, Firefox and OpenVPN client, etc.....
-- **Conductor**: The workers will need the following APIs:
-  - API to issue the personal certificate
-  - API to distribute the certificate among the OpenVPN servers
-  - API to store the Virtual Machine image in Blob
-- **Object Storage**: store the generated Virtual Machine so the user can download anytime by knowing this unique URL. Currently, we are usning Azure Blobs.
-- **Web server com print da Plataforma BB**: Web server that listens for GET request on port 80 and returns a PlataformaBB PNG print, but is only accessible via VPN.
-- **Central de suporte**: Organize FAQ, KB, Chat and phone to assist the staff who are having difficulty performing the steps
+- **Virtual Box Virtual Machine creator**: a service that builds one VirtualBox image per client tied (certificate) to the respective OpenVPNServer and is configured to act as a router at the users office.
+- **Object Storage**: service to store the generated Virtual Machine so the user can download anytime by knowing this unique URL
+- **Customer Service**: Organize FAQ, KB, Video, Chat and phone to assist the staff who are having difficulty performing the steps
 
