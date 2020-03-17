@@ -42,7 +42,9 @@ We need a highly scalable VPN infraestructure
 
 We need a ready-to-go easy-to-use Remote Desktop solution
 
-- **Website**: will have a landing page where the user will inform his/her e-mail and click "Request remote work kit" and a page with the users RDP shortcuts. The URL of this RDP list will have the following pattern: /user_@_email
+- **Website**: will have basically 2 pages:
+  - a landing page where the user will inform his/her e-mail and click "Request remote work kit"
+  - a page with the users RDP shortcuts. The URL of this RDP list will have the following pattern: /user_@_email
 - **Backend** Receives the form request of the landing page with the user e-mail. It issues a certificate for that request and starts a **Conductor** workflow to build the custom made infraestructure for that user (small business) passing those certificates along.
 - **Conductor**: Will bring up the OpenVPN server for the user with the respective certificate provisioned and will build and store a Virtual Machine (Router) with OpenVPN client with respective certificate configured. So, the workers will need the following APIs:
   - API to bring up (docker up) a OpenVPN Server for the requesting user with a label indicating who is the user of this instance
@@ -51,5 +53,6 @@ We need a ready-to-go easy-to-use Remote Desktop solution
 - **OpenVPN Server**: One isolated instance for each client, running in Docker containers https://github.com/flaviostutz/openvpn-server)
 - **Virtual Box Virtual Machine creator**: a service that builds one VirtualBox image per client tied (certificate) to the respective OpenVPNServer and is configured to act as a router at the users office.
 - **Object Storage**: service to store the generated Virtual Machine so the user can download anytime by knowing this unique URL
+- **IP/Nickname agent**: an executable program that runs on each of the office desktops, get its local IP address and prompts for a identification **Nickname** of that machine and sends this information to the **Backend** so it can keep a database of locals Nicknames and IPs and generates RDP clients for download by the user, simplifying the remote desktop use, without needing to know IP address or something like that
 - **Customer Service**: Organize FAQ, KB, Video, Chat and phone to assist the staff who are having difficulty performing the steps
 
